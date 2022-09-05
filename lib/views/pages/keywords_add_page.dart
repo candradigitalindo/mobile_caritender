@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:tender_mobile/services/keywords_service.dart';
 import 'package:tender_mobile/shared/theme.dart';
 import 'package:tender_mobile/views/widgets/buttons.dart';
 import 'package:tender_mobile/views/widgets/forms.dart';
@@ -11,6 +13,59 @@ class KeywordsAddPage extends StatefulWidget {
 }
 
 class _KeywordsAddPageState extends State<KeywordsAddPage> {
+  TextEditingController keywordsController = TextEditingController();
+  int count = 0;
+
+  void createData() {
+    KeywordsService()
+        .saveKeywords(
+      keywordsController.text,
+    )
+        .then((value) {
+      setState(() {
+        if (value) {
+          Alert(
+              context: context,
+              title: "Berhasil",
+              desc: "Keyword berhasil disimpan",
+              type: AlertType.success,
+              buttons: [
+                DialogButton(
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    })
+              ]).show();
+        } else {
+          Alert(
+              context: context,
+              title: "Gagal",
+              desc: "Keyword gagal disimpan",
+              type: AlertType.error,
+              buttons: [
+                DialogButton(
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    })
+              ]).show();
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,18 +90,18 @@ class _KeywordsAddPageState extends State<KeywordsAddPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // NOTE : PHONE INPUT
-                const CustomFormField(
+                CustomFormField(
                   title: 'Kata Kunci',
-                  keyboardType: TextInputType.number,
+                  controller: keywordsController,
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-
                 CustomFilledButton(
                   title: 'Simpan',
-                  onPressed: () {},
+                  onPressed: () {
+                    createData();
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -65,5 +120,3 @@ class _KeywordsAddPageState extends State<KeywordsAddPage> {
     );
   }
 }
-
-//https://www.youtube.com/watch?v=eh1mwHSebE4&t=6s

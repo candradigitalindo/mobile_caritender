@@ -48,6 +48,22 @@ class AuthService {
     }
   }
 
+  Future<void> logout() async {
+    try {
+      final token = await AuthService().getToken();
+      final res = await http.post(Uri.parse('$baseUrl/logout'), headers: {
+        "Authorization": token,
+      });
+      if (res.statusCode == 200) {
+        await clearLocalStorage();
+      } else {
+        throw jsonDecode(res.body)['message'];
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<UserModel> login(SignInFormModel data) async {
     try {
       final res = await http.post(

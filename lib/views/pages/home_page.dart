@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tender_mobile/shared/theme.dart';
 import 'package:tender_mobile/views/pages/filter_tender_page.dart';
 import 'package:tender_mobile/views/pages/keywords_page.dart';
+import 'package:tender_mobile/views/pages/logout_page.dart';
 import 'package:tender_mobile/views/pages/tender_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,9 +24,7 @@ class _HomePageState extends State<HomePage> {
       const TenderPage(),
       const FilterTenderPage(),
       const KeywordsPage(),
-      const Center(
-        child: Text('Logout'),
-      ),
+      const LogoutPage(),
     ];
     return Scaffold(
       backgroundColor: lightBackgroundColor,

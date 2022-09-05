@@ -16,4 +16,41 @@ class KeywordsService {
       throw Exception('Data Gagal diambil');
     }
   }
+
+  Future saveKeywords(String keyword) async {
+    final token = await AuthService().getToken();
+    final res = await http.post(
+        Uri.parse(
+          '$baseUrl/keywords',
+        ),
+        body: ({
+          'keyword': keyword,
+        }),
+        headers: {
+          'Authorization': token,
+        });
+
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future deleteKeywords(int id) async {
+    final token = await AuthService().getToken();
+    final res = await http.post(
+        Uri.parse(
+          '$baseUrl/keywords/$id',
+        ),
+        headers: {
+          'Authorization': token,
+        });
+
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
