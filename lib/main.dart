@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tender_mobile/blocs/auth/auth_bloc.dart';
 import 'package:tender_mobile/views/pages/home_page.dart';
+import 'package:tender_mobile/views/pages/keywords_add_page.dart';
 import 'package:tender_mobile/views/pages/onboarding_page.dart';
 import 'package:tender_mobile/views/pages/sign_in_page.dart';
 import 'package:tender_mobile/views/pages/sign_up_page.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
           '/sign-in': (context) => const SignInPage(),
           '/sign-up': (context) => const SignUpPage(),
           '/home': (context) => const HomePage(),
+          '/add-keywords': (context) => const KeywordsAddPage(),
         },
       ),
     );

@@ -2,6 +2,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tender_mobile/shared/theme.dart';
 import 'package:tender_mobile/views/pages/filter_tender_page.dart';
+import 'package:tender_mobile/views/pages/keywords_page.dart';
 import 'package:tender_mobile/views/pages/tender_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,15 +17,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> widget = [
-      Center(
-        child: Text('Home'),
-      ),
+      // const Center(
+      //   child: Text('Home'),
+      // ),
       const TenderPage(),
       const FilterTenderPage(),
-      Center(
-        child: Text('Keyword'),
-      ),
-      Center(
+      const KeywordsPage(),
+      const Center(
         child: Text('Logout'),
       ),
     ];
@@ -33,7 +32,7 @@ class _HomePageState extends State<HomePage> {
       body: widget[currentIndex],
       bottomNavigationBar: ConvexAppBar(
         items: const [
-          TabItem(icon: Icons.home, title: 'Home'),
+          // TabItem(icon: Icons.home, title: 'Home'),
           TabItem(icon: Icons.assignment, title: 'Tender'),
           TabItem(icon: Icons.checklist, title: 'Filter'),
           TabItem(icon: Icons.message, title: 'Keywords'),

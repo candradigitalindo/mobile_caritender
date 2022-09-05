@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tender_mobile/services/auth_service.dart';
@@ -5,6 +7,8 @@ import 'package:tender_mobile/shared/theme.dart';
 import 'package:tender_mobile/shared/values.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
+
+import 'package:url_launcher/url_launcher.dart';
 
 class TenderPage extends StatefulWidget {
   const TenderPage({Key? key}) : super(key: key);
@@ -45,6 +49,7 @@ class _TenderPageState extends State<TenderPage> {
             });
 
         final List fetchedTenders = jsonDecode(res.body)['data'];
+
         if (fetchedTenders.isNotEmpty) {
           setState(() {
             _tenders.addAll(fetchedTenders);
@@ -120,60 +125,104 @@ class _TenderPageState extends State<TenderPage> {
                     itemCount: _tenders.length,
                     controller: _controller,
                     itemBuilder: (_, index) => Card(
+                      elevation: 5,
                       margin: const EdgeInsets.symmetric(
-                        vertical: 8,
+                        vertical: 5,
                         horizontal: 10,
                       ),
-                      child: ListTile(
-                        title: Text(
-                          _tenders[index]['lpse'],
-                          style: _tenders[index]['isNew'] == 'New'
-                              ? blueTextStyle.copyWith(
-                                  fontSize: 20,
-                                  fontWeight: bold,
-                                )
-                              : blackTextStyle.copyWith(
-                                  fontSize: 20,
-                                  fontWeight: semiBold,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Stack(
+                        children: <Widget>[
+                          ListTile(
+                            title: const Icon(Icons.music_note,
+                                color: Colors.white),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _tenders[index]['nama_tender'],
+                                  style: blackTextStyle.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: semiBold,
+                                  ),
                                 ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _tenders[index]['nama_tender'],
-                              style: blackTextStyle.copyWith(
-                                fontSize: 18,
-                                fontWeight: semiBold,
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  _tenders[index]['lpse'],
+                                  style: blackTextStyle.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: semiBold,
+                                  ),
+                                ),
+                                Text(
+                                  'HPS : ' + _tenders[index]['hps'],
+                                  style: blackTextStyle.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: semiBold,
+                                  ),
+                                ),
+                                Text(
+                                  'Akhir Pendaftaran : ' +
+                                      _tenders[index]['tanggal_akhir'],
+                                  style: blackTextStyle.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: semiBold,
+                                  ),
+                                ),
+                                Text(
+                                  _tenders[index]['type'],
+                                  style: blackTextStyle.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: semiBold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: IconButton(
+                              iconSize: 30,
+                              color: blueColor,
+                              onPressed: () async {
+                                await launchUrl(
+                                  Uri.parse(
+                                    _tenders[index]['url'],
+                                  ),
+                                  mode: LaunchMode.inAppWebView,
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.info,
                               ),
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              'HPS : ' + _tenders[index]['hps'],
-                              style: blackTextStyle.copyWith(
-                                fontSize: 12,
-                                fontWeight: semiBold,
-                              ),
-                            ),
-                            Text(
-                              'Akhir Pendaftaran : ' +
-                                  _tenders[index]['tanggal_akhir'],
-                              style: blackTextStyle.copyWith(
-                                fontSize: 12,
-                                fontWeight: semiBold,
-                              ),
-                            ),
-                            Text(
-                              _tenders[index]['type'],
-                              style: blackTextStyle.copyWith(
-                                fontSize: 12,
-                                fontWeight: semiBold,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                          _tenders[index]['isNew'] == 'New'
+                              ? Positioned(
+                                  top: 0,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4,
+                                      horizontal: 12,
+                                    ),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.yellow,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                        bottomRight: Radius.circular(8),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "NEW",
+                                      style: blackTextStyle.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: semiBold,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                        ],
                       ),
                     ),
                   ),
